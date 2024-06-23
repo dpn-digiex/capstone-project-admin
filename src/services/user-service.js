@@ -1,6 +1,5 @@
 import { LOCAL_STORE_USER } from '@constants/index'
-
-import { getLocalStore, setLocalStore } from '@/utils'
+import { getLocalStore, setLocalStore } from '@utils/index'
 
 import axiosInstance from './axiosClient'
 
