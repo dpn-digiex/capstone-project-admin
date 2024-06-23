@@ -38,7 +38,7 @@ export const getProductBySlugService = async (slug) => {
   }
 }
 
-export const getProductListByCategoryService = async (queryOption) => {
+export const getProductListService = async (queryOption) => {
   try {
     const queryString = getQueryString(queryOption)
     const response = await axiosInstance.get(`/product/list?${queryString}`)

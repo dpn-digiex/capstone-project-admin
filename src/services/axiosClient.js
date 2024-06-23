@@ -4,7 +4,7 @@ import axios from 'axios'
 import { refreshToken } from './user-service'
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true, // Needed for cookies,
   headers: {
     // 'Content-Type': 'application/json'

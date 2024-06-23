@@ -8,6 +8,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-size: inherit;
+  color: inherit;
 }
 
 html {
@@ -19,5 +21,5 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Font Sample 01';
+  font-family: 'Roboto';
 }

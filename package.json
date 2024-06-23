@@ -4,13 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint --fix src --ext js,jsx tailwind.config.js",
     "preview": "vite preview",
     "format": "prettier --write ./src/**/*.{js,jsx,json,css,scss}"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.17.3",
     "axios": "^1.4.0",
     "i18next": "^23.4.4",
     "i18next-browser-languagedetector": "^7.1.0",

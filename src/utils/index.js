@@ -35,3 +35,24 @@ export const getQueryString = (options = {}) => {
     .slice(0, -1)
   return queryString
 }
+export const delayCallback = (callback, timeout = 500) => {
+  return new Promise((resolve) =>
+    setTimeout(async () => {
+      const data = await callback()
+      resolve(data)
+    }, timeout)
+  )
+}
+
+const cachedMap = new Map()
+
+export const hasData = (key) => {
+  return cachedMap.has(key)
+}
+export const setCachedData = (key, data) => {
+  if (key !== null || key !== undefined) cachedMap.set(key, data)
+}
+export const getCachedData = (key) => {
+  if (this.hasData(key)) return delayCallback(() => cachedMap.get(key), 250)
+  return null
+}
