@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "baseUrl": "./src",
+    "paths": {
+      "@services/*": ["./services/*"],
+      "@assets/*": ["./assets/*"],
+      "@assets": ["./assets/index.js"],
+      "@fonts/*": ["./assets/fonts/*"],
+      "@fonts": ["./assets/fonts/index.js"],
+      "@icons/*": ["./assets/icons/*"],
+      "@icons": ["./assets/icons/index.js"],
+      "@images/*": ["./assets/images/*"],
+      "@images": ["./assets/images/index.js"],
+      "@components/*": ["./components/*"],
+      "@components": ["./components/index.js"],
+      "@constants/*": ["./constants/*"],
+      "@constants": ["./constants/index.js"],
+      "@contexts/*": ["./contexts/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@hooks": ["./hooks/index.js"],
+      "@layouts/*": ["./locale/*"],
+      "@locale/*": ["./locale/*"],
+      "@locale": ["./locale/index.js"],
+      "@pages/*": ["./pages/*"],
+      "@pages": ["./pages/index.js"],
+      "@store/*": ["./store/*"],
+      "@store": ["./store/index.js"],
+      "@utils/*": ["./utils/*"],
+      "@utils": ["./utils/index.js"]
+    }
+  },
+  "include": ["src"]
+}

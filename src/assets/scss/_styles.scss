@@ -1,0 +1,9 @@
+@import '@assets/scss/_mixins.scss';
+@import '@assets/scss/_colors.scss';
+
+:root {
+  --primary-color: $sample-color-1;
+  --secondary-color: $sample-color-2;
+  --background-color: $sample-color-3;
+  --text-color: $black-color;
+}

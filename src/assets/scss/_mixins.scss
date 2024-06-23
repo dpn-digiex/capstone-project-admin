@@ -1,0 +1,122 @@
+// responsive
+$mobile-width: 375px;
+$tablet-width: 768px;
+$desktop-width: 1080px;
+
+@mixin mobile {
+  @media (max-width: #{$tablet-width - 1px}) {
+    @content;
+  }
+}
+
+// apply both mobile and tablet
+@mixin tablet-small {
+  @media (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+// apply both tablet and desktop
+@mixin tablet-large {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+// placeholder
+@mixin optional-at-root($sel) {
+  @at-root #{if(not &, $sel, selector-append(&, $sel))} {
+    @content;
+  }
+}
+
+@mixin placeholder {
+  @include optional-at-root('::-webkit-input-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root('::-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-ms-input-placeholder') {
+    @content;
+  }
+}
+
+// scroll y custom
+@mixin scrollbar-vertical-custom {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+
+  /* IE 10+ */
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px !important;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &:global(.on-scrollbar) {
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+  }
+
+  &:global(.on-scrollbar)::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    border-radius: 10px;
+    background-color: $neutrals-grey-8;
+  }
+
+  &:global(.on-scrollbar)::-webkit-scrollbar {
+    width: 4px !important;
+  }
+
+  &:global(.on-scrollbar)::-webkit-scrollbar-thumb {
+    background-color: #d4d4d4;
+  }
+}
+
+// font style mixin
+$font-family: 'Font Sample 01';
+@mixin text-primary {
+  font-family: $font-family;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 24px;
+  font-style: normal;
+}
+
+@mixin text-secondary {
+  font-family: $font-family;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  font-style: italic;
+}

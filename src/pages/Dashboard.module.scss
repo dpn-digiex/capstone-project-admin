@@ -1,0 +1,118 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: #121621;
+  color: white;
+  padding: 15px;
+  transition:
+    width 0.3s,
+    max-width 0.3s;
+  overflow: hidden;
+
+  &.open {
+    width: 240px;
+
+    .menuText {
+      max-width: 200px;
+      opacity: 1;
+    }
+  }
+
+  &.closed {
+    width: 80px;
+
+    .menuText {
+      max-width: 0;
+      opacity: 0;
+    }
+  }
+
+  .toggleButton {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 16px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menuList {
+    list-style-type: none;
+    padding: 0;
+
+    .menuItem {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 4px;
+      padding: 10px;
+      border-radius: 4px;
+      transition:
+        background-color 0.3s,
+        color 0.3s;
+
+      &:hover {
+        background-color: #f3f4f8;
+        color: black;
+      }
+
+      &.active {
+        background-color: #f3f4f8;
+        color: black;
+      }
+
+      .menuIcon {
+      }
+
+      .menuText {
+        transition:
+          max-width 0.3s,
+          opacity 0.3s;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.main {
+  flex-grow: 1;
+  background-color: #f4f4f4;
+  padding: 20px;
+  transition: margin-left 0.3s;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .title {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .headerIcons {
+      span {
+        margin-left: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .content {
+    margin-top: 20px;
+  }
+}
