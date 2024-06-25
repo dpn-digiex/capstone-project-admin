@@ -38,7 +38,7 @@ export const logout = async () => {
   try {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('user')
-    window.location.href = '/dang-nhap'
+    window.location.href = '/login'
     await axiosInstance.post('/user/logout')
     delete axiosInstance.defaults.headers.common['x-access-token']
     return true
@@ -124,5 +124,16 @@ export const changePassword = async (payload) => {
   } catch (error) {
     console.log(error)
     return false
+  }
+}
+export const getUserDetail = async (userId) => {
+  try {
+    const response = await axiosInstance.get(`/user/${userId}`)
+    const { status, message, data } = response
+    if (status !== 200) throw new Error(message)
+    return data
+  } catch (error) {
+    console.log(error)
+    return null
   }
 }

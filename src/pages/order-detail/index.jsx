@@ -152,7 +152,7 @@ const OrderDetailPage = () => {
           </div>
         </div>
         <div className='flex flex-col gap-4'>
-          <p className='font-bold'>Danh sách sản phẩm mua</p>
+          <p className='font-bold'>Danh sách sản phẩm đã đặt</p>
           <div className='p-2 rounded-md border border-solid border-slate-400 flex flex-col'>
             {response['items']?.map((item) => (
               <div key={'' + item._id + item.variantId + item.optionId} className='flex gap-2 py-2 peer peer-[]:border-t'>
