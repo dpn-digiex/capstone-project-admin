@@ -103,3 +103,7 @@ export const validateInput = (input, compare = {}) => {
   }
   return null
 }
+export const concatString = (...data) => {
+  const address = data.reduce((result, item) => (item ? result.concat(item) : result), [])
+  return address.join(', ')
+}
