@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { MdArticle } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import Loading from '@components/loading'
 import TableComponent from '@components/table'
@@ -58,17 +59,27 @@ const ProductPage = () => {
       accessorFn: (row) => row.descriptions || 'Chưa có mô tả...',
       cell: (info) => info.getValue(),
       header: () => <span className='flex justify-start items-center py-[12px] pr-[24px]'>Mô tả</span>
+    },
+    {
+      id: 'actions',
+      accessorFn: (row) => row._id,
+      cell: (info) => (
+        <NavLink to={`detail/${info.getValue()}`}>
+          <MdArticle size={24} fill='#2b9bcc' />
+        </NavLink>
+      ),
+      header: () => <span className='flex justify-start items-center py-[12px] pr-[24px]'></span>
     }
   ]
 
   if (isLoading) return <Loading />
 
   return (
-    <div id='product-page' className={styles.pageContainer}>
+    <div className={styles.pageContainer}>
       <div className={styles.pageHeader}>
         <h3 className={styles.title}>Sản phẩm</h3>
         <NavLink to='add' className={styles.addBtn}>
-          Add new
+          Thêm sản phẩm
         </NavLink>
       </div>
       <div>
