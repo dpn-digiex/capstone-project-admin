@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import Loading from '@components/loading'
 import TableComponent from '@components/table'
 import useFetch from '@hooks/useFetch'
@@ -66,9 +67,9 @@ const ProductPage = () => {
     <div id='product-page' className={styles.pageContainer}>
       <div className={styles.pageHeader}>
         <h3 className={styles.title}>Sản phẩm</h3>
-        <button type='button' className={styles.addBtn}>
+        <NavLink to='add' className={styles.addBtn}>
           Add new
-        </button>
+        </NavLink>
       </div>
       <div>
         <TableComponent

@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { ROUTES_APP } from '@constants'
+import AddProductPage from '@pages/add-product'
 import Dashboard from '@pages/Dashboard'
 import HomePage from '@pages/home'
 import OrderPage from '@pages/order'
@@ -13,7 +14,8 @@ const router = createBrowserRouter([
     children: [
       { path: '/', index: true, Component: HomePage },
       { path: 'orders', Component: OrderPage },
-      { path: 'products', Component: ProductPage }
+      { path: 'products', Component: ProductPage },
+      { path: 'products/add', Component: AddProductPage }
     ]
   }
 ])
