@@ -1,16 +1,10 @@
 import { useState } from 'react'
-import {
-  FaBars,
-  FaBox,
-  FaDollarSign,
-  FaHome,
-  FaShoppingCart,
-  FaTags,
-  FaThList,
-  FaUserCog,
-  FaUsers
-} from 'react-icons/fa'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { FaBars, FaBox, FaHome, FaShoppingCart, FaUsers } from 'react-icons/fa'
+import { MdExitToApp } from 'react-icons/md'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useAppStore } from '@libs/zustand'
+import { logout } from '@services/user-service'
 
 import styles from './Dashboard.module.scss'
 
@@ -18,24 +12,29 @@ const DASHBOARD_ITEMS = [
   { icon: <FaHome />, title: 'Tổng quan', link: '/' },
   { icon: <FaShoppingCart />, title: 'Đơn hàng', link: '/orders' },
   { icon: <FaBox />, title: 'Sản phẩm', link: '/products' },
-  { icon: <FaUsers />, title: 'Nhân viên', link: '/staff' },
-  { icon: <FaUsers />, title: 'Khách hàng', link: '/customers' },
-  { icon: <FaTags />, title: 'Coupon Code', link: '/coupon-code' },
-  { icon: <FaTags />, title: 'Vận chuyển', link: '/delivery' },
-  { icon: <FaThList />, title: 'Categories', link: '/categories' },
-  { icon: <FaDollarSign />, title: 'Transaction', link: '/transactions' },
-  { icon: <FaDollarSign />, title: 'Blogs', link: '/blogs' },
-  { icon: <FaUserCog />, title: 'Sự kiện', link: '/events' },
-  { icon: <FaUserCog />, title: 'Tài khoản', link: '/admin-permissions' },
-  { icon: <FaUserCog />, title: 'Cài đặt', link: '/settings' }
+  { icon: <FaUsers />, title: 'Khách hàng', link: '/customers' }
 ]
 
 const Dashboard = () => {
+  const accessToken = useAppStore((state) => state.accessToken)
+  const setAccessToken = useAppStore((state) => state.setAccessToken)
   const [open, setOpen] = useState(true)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const handleDrawerToggle = () => {
     setOpen(!open)
+  }
+  const handleLogout = async () => {
+    try {
+      const result = await logout()
+      if (result === false) throw new Error('Không thể đăng xuất, vui lòng thử lại')
+      setAccessToken(null)
+      navigate('/login')
+      toast.success('Đăng xuất thành công')
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
   return (
@@ -71,7 +70,19 @@ const Dashboard = () => {
           <h1 className={styles.title}>Quản lý cửa hàng</h1>
           <div className={styles.headerIcons}>
             <span>🔔</span>
-            <span>👤</span>
+            <NavLink
+              to='/login'
+              onClick={(e) => {
+                if (accessToken) e.preventDefault()
+              }}
+            >
+              👤
+            </NavLink>
+            {accessToken ? (
+              <div onClick={handleLogout} className='cursor-pointer'>
+                <MdExitToApp size={24} />
+              </div>
+            ) : null}
           </div>
         </header>
         <div className={styles.content}>

@@ -107,3 +107,13 @@ export const concatString = (...data) => {
   const address = data.reduce((result, item) => (item ? result.concat(item) : result), [])
   return address.join(', ')
 }
+export const formatDateInputValue = (value) => {
+  if (!value) return ''
+  const date = new Date(value)
+  const year = date.getFullYear()
+  let month = (date.getMonth() + 1).toString()
+  let day = date.getDate().toString()
+  if (month.length < 2) month = '0' + month
+  if (day.length < 2) day = '0' + day
+  return [year, month, day].join('-')
+}

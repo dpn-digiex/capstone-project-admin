@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { ROUTES_APP } from '@constants'
 import AddProductPage from '@pages/add-product'
+import CustomerPage from '@pages/customer'
+import CustomerDetailPage from '@pages/customer-detail'
 import Dashboard from '@pages/Dashboard'
 import HomePage from '@pages/home'
 import LoginPage from '@pages/login'
@@ -18,7 +20,9 @@ const router = createBrowserRouter([
       { path: 'orders', Component: OrderPage },
       { path: 'orders/detail/:orderId', Component: OrderDetailPage },
       { path: 'products', Component: ProductPage },
-      { path: 'products/add', Component: AddProductPage }
+      { path: 'products/add', Component: AddProductPage },
+      { path: 'customers', Component: CustomerPage },
+      { path: 'customers/detail/:userId', Component: CustomerDetailPage }
     ]
   },
   { id: 'public', path: '/login', Component: LoginPage }
