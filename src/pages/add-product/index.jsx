@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MdAdd } from 'react-icons/md'
+import { MdAdd, MdClose } from 'react-icons/md'
 import Loading from '@components/loading'
 import SelectBase from '@components/select'
 import useFetch from '@hooks/useFetch'
@@ -18,9 +18,12 @@ const AddProductPage = () => {
 
   const [showModal, setShowModal] = useState(false)
   const [variants, setVariants] = useState([])
-
-  const handleAddVariant = () => {}
-  const handleUpdateVariant = () => {}
+  const [selectedVariant, setSelectedVariant] = useState({ options: [] })
+  
+  const handleRemoveVariant = (variantId) => {
+    setVariants((prev) => prev.filter((variant) => variant.id !== variantId))
+    setSelectedVariant({ options: [] })
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(variants)
@@ -77,6 +80,49 @@ const AddProductPage = () => {
           <input type='hidden' id='productModel' name='model' placeholder='Model' value={productName} />
         </div>
         <div className='mb-6 col-span-2'>
+          <div className='flex items-center gap-4'>
+            <label className='block text-sm font-medium text-gray-900 dark:text-white'>Các mẫu sản phẩm</label>
+            <button
+              type='button'
+              className='border-gray-50 outline-none bg-slate-600 text-white p-2 rounded'
+              onClick={() => setShowModal(true)}
+            >
+              <MdAdd size={18} />
+            </button>
+          </div>
+          <div className='grid grid-cols-6 gap-2 mt-2'>
+            {variants.map((variant) => (
+              <div
+                key={variant.id}
+                className='px-4 py-2 bg-white shadow-md rounded-md relative'
+                onClick={() => {
+                  setSelectedVariant(variant)
+                  setShowModal(true)
+                }}
+              >
+                <button
+                  type='button'
+                  className='absolute top-2 right-2 hover:bg-gray-50 rounded-full'
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleRemoveVariant(variant.id)
+                  }}
+                >
+                  <MdClose size={16} fill='red' stroke='red' />
+                </button>
+                <p className='text-sm font-medium'>Mẫu: {variant.name}</p>
+                <div className='mt-2 border-t border-gray-100'>
+                  {variant.specifications?.map?.((specification) => (
+                    <span key={specification.type} className='capitalize'>
+                      {specification.type}: {specification.value}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className='mb-6 col-span-2'>
           <label htmlFor='description' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
             Descriptions
           </label>
@@ -88,18 +134,6 @@ const AddProductPage = () => {
             placeholder='Viết mô tả về sản phẩm...'
           ></textarea>
         </div>
-        <div className='mb-6 col-span-2'>
-          <div className='flex items-center gap-4'>
-            <label className='block text-sm font-medium text-gray-900 dark:text-white'>Các mẫu sản phẩm</label>
-            <button
-              type='button'
-              className='border-gray-50 outline-none bg-slate-600 text-white p-2 rounded'
-              onClick={() => setShowModal(true)}
-            >
-              <MdAdd size={18} />
-            </button>
-          </div>
-        </div>
         <div className='col-span-2 flex items-center justify-center'>
           <button type='submit' className='border-gray-50 outline-none bg-slate-800 text-white px-12 py-2 rounded'>
             Thêm
@@ -107,7 +141,12 @@ const AddProductPage = () => {
         </div>
       </form>
       {showModal ? (
-        <VariantModal showModal={showModal} setShowModal={setShowModal} onSetVariants={setVariants} />
+        <VariantModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          item={selectedVariant}
+          onSetVariants={setVariants}
+        />
       ) : null}
     </div>
   )
