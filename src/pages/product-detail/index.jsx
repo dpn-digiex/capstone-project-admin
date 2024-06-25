@@ -1,22 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { MdAdd, MdClose } from 'react-icons/md'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '@components/loading'
 import SelectBase from '@components/select'
+import Skeleton from '@components/skeleton'
 import useFetch from '@hooks/useFetch'
 import { getCategoryListService } from '@services/category-service'
-import { addProduct, uploadImage } from '@services/product-service'
+import { getProductByIdService, updateProduct, uploadImage } from '@services/product-service'
+import { getType } from '@utils/index'
 
 import VariantModal from './variant'
 
 import styles from './index.module.scss'
 
-const AddProductPage = () => {
-  const { isLoading, response } = useFetch({
+const ProductDetailPage = () => {
+  const { isLoading: categoryLoad, response: categories } = useFetch({
     queryFunction: getCategoryListService
   })
+
   const navigate = useNavigate()
+  const params = useParams()
+  const { isLoading, response: product } = useFetch({
+    queryFunction: () => getProductByIdService(params.productId)
+  })
   const [productName, setProductName] = useState('')
   const [productImage, setProductImage] = useState('')
   const [category, setCategory] = useState({ id: null })
@@ -62,7 +69,7 @@ const AddProductPage = () => {
           }
         })
       }
-      const result = await addProduct(payload)
+      const result = await updateProduct(params.productId, payload)
       if (!result) throw new Error('')
       toast.success('Thêm thành công')
       navigate('/products')
@@ -72,11 +79,22 @@ const AddProductPage = () => {
     }
   }
 
+  useEffect(() => {
+    if (getType(product) === 'object') {
+      setProductName(product.name)
+      setVariants(product.variants)
+      setProductImage(product.mainImageUrl)
+      if (getType(categories) === 'array') {
+        setCategory(categories.find((c) => c._id === product.category))
+      }
+    }
+  }, [product, categories])
+
   if (isLoading) return <Loading />
   return (
     <div className={styles.pageContainer}>
       <div className={styles.pageHeader}>
-        <h3 className={styles.title}>Thêm sản phẩm</h3>
+        <h3 className={styles.title}>Chi tiết sản phẩm</h3>
       </div>
       <form className='grid gap-6 mb-6 md:grid-cols-2' onSubmit={handleSubmit}>
         <div className='col-span-2'>
@@ -96,15 +114,20 @@ const AddProductPage = () => {
         </div>
         <div>
           <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Phân loại</label>
-          <SelectBase
-            name='category'
-            className='text-sm'
-            options={response}
-            renderKey='name'
-            valueKey='_id'
-            onSelect={(option) => setCategory(option)}
-            placeholder='Chọn phân loại...'
-          />
+          {categoryLoad ? (
+            <Skeleton />
+          ) : (
+            <SelectBase
+              name='category'
+              className='text-sm'
+              options={categories}
+              renderKey='name'
+              valueKey='_id'
+              onSelect={(option) => setCategory(option)}
+              placeholder='Chọn phân loại...'
+              defaultValue={product.category}
+            />
+          )}
         </div>
         <div>
           <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Dòng sản phẩm</label>
@@ -117,6 +140,7 @@ const AddProductPage = () => {
             renderKey='name'
             valueKey='_id'
             placeholder='Chọn dòng sản phẩm...'
+            defaultValue={product.subCategory}
           />
         </div>
         <div className='col-span-2'>
@@ -149,7 +173,7 @@ const AddProductPage = () => {
             {variants.map((variant) => (
               <div
                 key={variant._id}
-                className='px-4 py-2 bg-white shadow-md rounded-md relative'
+                className='px-4 py-2 bg-white shadow-md rounded-md relative cursor-pointer'
                 onClick={() => {
                   setSelectedVariant(variant)
                   setShowModal(true)
@@ -166,7 +190,7 @@ const AddProductPage = () => {
                   <MdClose size={16} fill='red' stroke='red' />
                 </button>
                 <p className='text-sm font-medium'>Mẫu: {variant.name}</p>
-                <div className='mt-2 pt-2 border-t border-gray-100 flex flex-col gap-1'>
+                <div className='mt-2 pt-2 border-t border-gray-100 text-sm flex flex-col gap-1'>
                   {variant.specifications?.map?.((specification) => (
                     <span key={specification.type} className='capitalize'>
                       {specification.type}: {specification.value}
@@ -183,10 +207,11 @@ const AddProductPage = () => {
           </label>
           <textarea
             id='description'
-            name='descriptions'
+            name='description'
             rows={4}
             className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder='Viết mô tả về sản phẩm...'
+            defaultValue={product.descriptions}
           ></textarea>
         </div>
         <div className='col-span-2 flex items-center justify-center'>
@@ -207,4 +232,4 @@ const AddProductPage = () => {
   )
 }
 
-export default AddProductPage
+export default ProductDetailPage

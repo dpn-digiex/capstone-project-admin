@@ -137,3 +137,15 @@ export const getUserDetail = async (userId) => {
     return null
   }
 }
+
+export const getUserList = async () => {
+  try {
+    const response = await axiosInstance.get(`/user/list`)
+    const { status, message, data } = response
+    if (status !== 200) throw new Error(message)
+    return data
+  } catch (error) {
+    console.log(error)
+    return []
+  }
+}

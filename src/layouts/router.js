@@ -9,6 +9,7 @@ import LoginPage from '@pages/login'
 import OrderPage from '@pages/order'
 import OrderDetailPage from '@pages/order-detail'
 import ProductPage from '@pages/product'
+import ProductDetailPage from '@pages/product-detail'
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: 'orders/detail/:orderId', Component: OrderDetailPage },
       { path: 'products', Component: ProductPage },
       { path: 'products/add', Component: AddProductPage },
+      { path: 'products/detail/:productId', Component: ProductDetailPage },
       { path: 'customers', Component: CustomerPage },
       { path: 'customers/detail/:userId', Component: CustomerDetailPage }
     ]

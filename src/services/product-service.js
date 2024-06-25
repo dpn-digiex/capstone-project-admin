@@ -61,3 +61,40 @@ export const getVariantDetailService = async (listVariant) => {
     return []
   }
 }
+
+export const uploadImage = async (payload, productName, categoryId) => {
+  try {
+    const response = await axiosInstance.post(
+      `/cloud/upload-image?categoryId=${categoryId}&fileName=${productName}`,
+      payload
+    )
+    const { status, message, data } = response
+    if (status !== 200) throw new Error(message)
+    return data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+export const addProduct = async (payload) => {
+  try {
+    const response = await axiosInstance.post(`/product/add`, payload)
+    const { status, message, data } = response
+    if (status !== 200) throw new Error(message)
+    return data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+export const updateProduct = async (productId, payload) => {
+  try {
+    const response = await axiosInstance.patch(`/product/update/${productId}`, payload)
+    const { status, message, data } = response
+    if (status !== 200) throw new Error(message)
+    return data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
