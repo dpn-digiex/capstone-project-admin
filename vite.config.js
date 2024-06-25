@@ -21,7 +21,8 @@ export default defineConfig({
       '@locale': path.resolve(__dirname, './src/locale'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@store': path.resolve(__dirname, './src/store'),
-      '@utils': path.resolve(__dirname, './src/utils')
+      '@utils': path.resolve(__dirname, './src/utils'),
+      '@libs': path.resolve(__dirname, './src/libs')
     }
   },
   plugins: [react()],

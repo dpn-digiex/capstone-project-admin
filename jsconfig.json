@@ -28,6 +28,7 @@
       "@store/*": ["./store/*"],
       "@store": ["./store/index.js"],
       "@utils/*": ["./utils/*"],
+      "@libs/*": ["./libs/*"],
       "@utils": ["./utils/index.js"]
     }
   },
