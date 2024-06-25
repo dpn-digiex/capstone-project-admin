@@ -65,7 +65,8 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
-      <div className={styles.main}>
+
+      <div className={styles.mainDashboard}>
         <header className={styles.header}>
           <h1 className={styles.title}>Quản lý cửa hàng</h1>
           <div className={styles.headerIcons}>
