@@ -21,7 +21,7 @@ const INIT_OPTION = {
 
 const VariantModal = ({ showModal = false, setShowModal = () => {}, item, onSetVariants = () => {} }) => {
   const [option, setOption] = useState(INIT_OPTION)
-  const [variant, setVariant] = useState(item ?? { options: [] })
+  const [variant, setVariant] = useState(item ?? { options: [], specifications: [] })
 
   const handleAddOption = () => {
     setVariant((prev) => ({ ...prev, options: prev.options.concat(option) }))
@@ -64,6 +64,14 @@ const VariantModal = ({ showModal = false, setShowModal = () => {}, item, onSetV
                   className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   placeholder='Kích thước'
                   required
+                  onChange={(e) =>
+                    setVariant((prev) => ({
+                      ...prev,
+                      specifications: prev.specifications
+                        ?.filter?.((s) => s.type !== 'size')
+                        .concat({ type: 'size', value: e.target.value })
+                    }))
+                  }
                 />
               </div>
               <div className=''>
@@ -73,6 +81,14 @@ const VariantModal = ({ showModal = false, setShowModal = () => {}, item, onSetV
                   className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   placeholder='Bộ xử lý'
                   required
+                  onChange={(e) =>
+                    setVariant((prev) => ({
+                      ...prev,
+                      specifications: prev.specifications
+                        ?.filter?.((s) => s.type !== 'processor')
+                        .concat({ type: 'processor', value: e.target.value })
+                    }))
+                  }
                 />
               </div>
               <div className=''>
@@ -82,6 +98,14 @@ const VariantModal = ({ showModal = false, setShowModal = () => {}, item, onSetV
                   className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   placeholder='Dung lượng'
                   required
+                  onChange={(e) =>
+                    setVariant((prev) => ({
+                      ...prev,
+                      specifications: prev.specifications
+                        ?.filter?.((s) => s.type !== 'storage')
+                        .concat({ type: 'storage', value: e.target.value })
+                    }))
+                  }
                 />
               </div>
               <div className='col-span-2'>
@@ -208,7 +232,7 @@ const VariantModal = ({ showModal = false, setShowModal = () => {}, item, onSetV
                 </div>
                 <div className='flex flex-col gap-2 mt-4'>
                   {variant.options?.map((option) => (
-                    <div key={option.id} className='w-full p-2 rounded bg-gray-50 text-sm flex items-center gap-4'>
+                    <div key={option._id} className='w-full p-2 rounded bg-gray-50 text-sm flex items-center gap-4'>
                       <div
                         className='w-10 h-10 rounded-full'
                         style={{

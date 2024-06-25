@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { MdAdd, MdClose } from 'react-icons/md'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '@components/loading'
 import SelectBase from '@components/select'
 import Skeleton from '@components/skeleton'
 import useFetch from '@hooks/useFetch'
 import { getCategoryListService } from '@services/category-service'
-import { getProductByIdService } from '@services/product-service'
+import { getProductByIdService, updateProduct, uploadImage } from '@services/product-service'
 import { getType } from '@utils/index'
 
 import VariantModal from './variant'
@@ -17,30 +18,72 @@ const ProductDetailPage = () => {
   const { isLoading: categoryLoad, response: categories } = useFetch({
     queryFunction: getCategoryListService
   })
+
+  const navigate = useNavigate()
   const params = useParams()
   const { isLoading, response: product } = useFetch({
     queryFunction: () => getProductByIdService(params.productId)
   })
   const [productName, setProductName] = useState('')
+  const [productImage, setProductImage] = useState('')
   const [category, setCategory] = useState({ id: null })
 
   const [showModal, setShowModal] = useState(false)
   const [variants, setVariants] = useState([])
-  const [selectedVariant, setSelectedVariant] = useState({ options: [] })
+  const [selectedVariant, setSelectedVariant] = useState({ options: [], specifications: [] })
 
   const handleRemoveVariant = (variantId) => {
     setVariants((prev) => prev.filter((variant) => variant._id !== variantId))
-    setSelectedVariant({ options: [] })
+    setSelectedVariant({ options: [], specifications: [] })
   }
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(variants)
+  const handleUploadImage = async (e) => {
+    try {
+      const file = e.target.files[0]
+      const formData = new FormData()
+      formData.append('image', file)
+      const response = await uploadImage(formData, productName, category._id)
+      setProductImage(response.url ?? '')
+    } catch (error) {
+      console.log(error)
+      toast.error('Không thể tải ảnh lên')
+    }
+  }
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault()
+      const formData = new FormData(e.target)
+      const payload = {
+        ...Object.fromEntries(formData),
+        brand: 'Apple',
+        slug: Date.now(),
+        mainImageUrl: productImage,
+        images: [productImage],
+        variants: variants.map((v) => {
+          delete v._id
+          return {
+            ...v,
+            options: v.options?.map((o) => {
+              delete o._id
+              return o
+            })
+          }
+        })
+      }
+      const result = await updateProduct(params.productId, payload)
+      if (!result) throw new Error('')
+      toast.success('Thêm thành công')
+      navigate('/products')
+    } catch (error) {
+      console.log(error)
+      toast.error('Đã xảy ra lỗi, vui lòng thử lại.')
+    }
   }
 
   useEffect(() => {
     if (getType(product) === 'object') {
       setProductName(product.name)
       setVariants(product.variants)
+      setProductImage(product.mainImageUrl)
       if (getType(categories) === 'array') {
         setCategory(categories.find((c) => c._id === product.category))
       }
@@ -98,6 +141,18 @@ const ProductDetailPage = () => {
             valueKey='_id'
             placeholder='Chọn dòng sản phẩm...'
             defaultValue={product.subCategory}
+          />
+        </div>
+        <div className='col-span-2'>
+          <label htmlFor='productImage' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+            Hình ảnh
+          </label>
+          <input
+            type='file'
+            id='productImage'
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            // required
+            onChange={handleUploadImage}
           />
         </div>
         <div>

@@ -11,7 +11,7 @@ import styles from './index.module.scss'
 
 const ProductPage = () => {
   const { isLoading, response } = useFetch({
-    queryFunction: () => getProductListService()
+    queryFunction: () => getProductListService({ page_number: 1, page_size: 1000 })
   })
   const [activePage, setActivePage] = useState(1)
   const [rowSelection, setRowSelection] = useState({})
