@@ -1,4 +1,6 @@
 import React from 'react'
+import { MdArticle } from 'react-icons/md'
+import { NavLink } from 'react-router-dom'
 import Loading from '@components/loading'
 import useFetch from '@hooks/useFetch'
 import {
@@ -51,6 +53,7 @@ const CustomerPage = () => {
                 <TableCell>Username</TableCell>
                 <TableCell>Role</TableCell>
                 <TableCell>Gender</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -65,6 +68,11 @@ const CustomerPage = () => {
                   <TableCell>{user.username}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>{user.gender}</TableCell>
+                  <TableCell>
+                    <NavLink to={`detail/${user._id}`}>
+                      <MdArticle size={24} fill='#2b9bcc' />
+                    </NavLink>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

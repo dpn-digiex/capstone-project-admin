@@ -20,6 +20,9 @@ const statusColors = {
   canceled: 'red',
   delivered: 'blue'
 }
+import { MdArticle } from 'react-icons/md'
+import { NavLink } from 'react-router-dom'
+
 import styles from './index.module.scss'
 
 const OrderPage = () => {
@@ -66,6 +69,7 @@ const OrderPage = () => {
                 <TableCell>Thanh toán</TableCell>
                 <TableCell>Ngày đặt</TableCell>
                 <TableCell>Chi phí</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -89,6 +93,11 @@ const OrderPage = () => {
                   <TableCell>{new Date(order.orderDate).toLocaleDateString()}</TableCell>
                   <TableCell>
                     {calculateOrderValue(order.items).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </TableCell>
+                  <TableCell>
+                    <NavLink to={`detail/${order._id}`}>
+                      <MdArticle size={24} fill='#2b9bcc' />
+                    </NavLink>
                   </TableCell>
                 </TableRow>
               ))}
